@@ -360,7 +360,7 @@ mutation IntroduceMonsterFatFixedInput {
     }
 }
 
-mutation IntroduceMonsterFatExpr($properties : [Property]) {
+mutation IntroduceMonsterFatExpr($properties : [Property!]!) {
   introduceMonster(input:
     { clientMutationId: "123",
       name: "Green Slime",

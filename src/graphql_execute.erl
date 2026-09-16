@@ -970,7 +970,8 @@ var_coerce(Ep, Tau, Sigma, V) when is_binary(Tau)         ->
 var_coerce(_Ep, Refl, Refl, Value)                         -> Value;
 var_coerce(Ep, {non_null, Tau}, {non_null, Sigma}, Value) ->
     var_coerce(Ep, Tau, Sigma, Value);
-var_coerce(_Ep, {non_null, Tau}, Tau, Value)               -> Value;
+var_coerce(Ep, {non_null, Tau}, Sigma, Value) ->
+    var_coerce(Ep, Tau, Sigma, Value);
 var_coerce(Ep, {list, Tau}, {list, Sigma}, Values) ->
     var_coerce(Ep, Tau, Sigma, Values);
 var_coerce(Ep, Tau, {list, SType}, Value)                 -> [var_coerce(Ep, Tau, SType, Value)].
