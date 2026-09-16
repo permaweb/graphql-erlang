@@ -3,4 +3,7 @@ query TestNullInput {
         id
         description
     }
+    rooms(ids: null) {
+        id
+    }
 }

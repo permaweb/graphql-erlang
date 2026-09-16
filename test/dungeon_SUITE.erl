@@ -985,19 +985,17 @@ missing_fragment(Config) ->
     ok.
 
 null_input(Config) ->
-    #{errors := [_]} =
+    {ok, Nullable} = read_doc(Config, <<"test_null_input_2.graphql">>),
+    true = th:v(Nullable),
+    false = th:v(<<"{__typename @skip(if:null)}">>),
+    false = th:v(<<"{__typename @include(if:null)}">>),
+    #{errors := [#{extensions := #{code := type_mismatch},
+                  path := [<<"TestNullInput">>, <<"monster">>, <<"id">>]}]} =
         run(Config, <<"test_null_input_1.graphql">>, <<"TestNullInput">>, #{}),
-    #{errors :=
-          [#{extensions := #{ code := null_input },
-             message :=
-                 <<"The arg id is given a null, which is not allowed in the input path">>,
-             path :=
-                 [<<"TestNullInput">>,<<"room">>,
-                  <<"id">>]}]} = run(Config, <<"test_null_input_2.graphql">>, <<"TestNullInput">>, #{}),
     %% The following bugs must fail because the value is null which is not allowed
-    #{ errors := [#{ extensions := #{ code := type_mismatch }}]} =
+    #{ errors := [#{ extensions := #{ code := missing_non_null_param }}]} =
         run(Config, <<"test_null_input_3.graphql">>, <<"TestNullInput">>, #{}),
-    #{ errors := [#{ extensions := #{ code := type_mismatch }}]} =
+    #{ errors := [#{ extensions := #{ code := missing_non_null_param }}]} =
         run(Config, <<"test_null_input_4.graphql">>, <<"TestNullInput">>,
             #{ <<"input">> =>
                    #{ <<"name">> => <<"Orc">>,
