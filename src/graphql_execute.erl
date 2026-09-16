@@ -972,6 +972,8 @@ var_coerce(Ep, {non_null, Tau}, {non_null, Sigma}, Value) ->
     var_coerce(Ep, Tau, Sigma, Value);
 var_coerce(Ep, {non_null, Tau}, Sigma, Value) ->
     var_coerce(Ep, Tau, Sigma, Value);
+var_coerce(Ep, Tau, {non_null, Sigma}, Value) when Value /= null ->
+    var_coerce(Ep, Tau, Sigma, Value);
 var_coerce(Ep, {list, Tau}, {list, Sigma}, Values) ->
     var_coerce(Ep, Tau, Sigma, Values);
 var_coerce(Ep, Tau, {list, SType}, Value)                 -> [var_coerce(Ep, Tau, SType, Value)].

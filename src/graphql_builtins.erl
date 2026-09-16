@@ -36,7 +36,7 @@ standard_directives_inject(Ep) ->
         locations => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
         resolve_module => graphql_directives,
         args => #{ <<"if">> => #{
-            type => 'Bool',
+            type => 'Bool!',
             default => false,
             description => <<"Wether or not the item should be skipped">> }}
         }},
@@ -46,7 +46,7 @@ standard_directives_inject(Ep) ->
         locations => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
         resolve_module => graphql_directives,
         args => #{ <<"if">> => #{
-            type => 'Bool',
+            type => 'Bool!',
             default => false,
             description => <<"Wether or not the item should be included">> }}
         }},

@@ -256,12 +256,14 @@ check_args_(Ctx, Args, [{N, #schema_arg { ty = ArgTy,
     {ok, Sigma} = infer_input_type(Ctx, ArgTy),
 
     case lists:keytake(N, 1, Args) of
-        {value, {_, null}, _} ->
-            %% You are currently not allowed to input null values
-            err(CtxP, {null_input, N});
         {value, {_, Val}, RemainingArgs} ->
             %% Found argument with value Val
-            Res = case check_value(CtxP, Val, Sigma) of
+            CheckType = case {Val, Sigma, Default} of
+                            {{var, _}, {non_null, Inner}, D}
+                              when D /= undefined, D /= null -> Inner;
+                            _ -> Sigma
+                        end,
+            Res = case check_value(CtxP, Val, CheckType) of
                       {ok, #var{} = Var} ->
                           {N, #{ type => Sigma,
                                  value => Var#var { default = Default }}};
